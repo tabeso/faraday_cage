@@ -1,5 +1,6 @@
-require "faraday_cage/version"
+require 'faraday_cage/version'
+require 'faraday_cage/errors'
 
 module FaradayCage
-  # Your code goes here...
+  autoload :Status, 'faraday_cage/status'
 end
