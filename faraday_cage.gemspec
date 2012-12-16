@@ -4,16 +4,32 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'faraday_cage/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "faraday_cage"
+  gem.name          = 'faraday_cage'
   gem.version       = FaradayCage::VERSION
-  gem.authors       = ["Gabriel Evans"]
-  gem.email         = ["gabriel@codeconcoction.com"]
+  gem.authors       = ['Gabriel Evans']
+  gem.email         = ['gabriel@codeconcoction.com']
   gem.description   = %q{TODO: Write a gem description}
   gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.homepage      = 'https://github.com/gevans/faraday_cage'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.require_paths = ["lib"]
+  gem.require_paths = ['lib']
+
+  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'pry'
+  gem.add_development_dependency 'yard'
+  gem.add_development_dependency 'redcarpet'
+
+  gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'simplecov'
+
+  gem.add_development_dependency 'guard'
+  gem.add_development_dependency 'guard-bundler'
+  gem.add_development_dependency 'guard-rspec'
+  gem.add_development_dependency 'guard-yard'
+  gem.add_development_dependency 'rb-fsevent'
+  gem.add_development_dependency 'rb-inotify'
+  gem.add_development_dependency 'growl'
 end
