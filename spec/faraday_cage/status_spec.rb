@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe FaradayCage::Status do
 
-  describe '#new' do
+  describe '#initialize' do
 
     it 'initializes with a status code' do
       described_class.new(200)
@@ -50,25 +50,47 @@ describe FaradayCage::Status do
   describe '#==' do
 
     subject(:status) do
-      described_class.new(123)
+      described_class.new(404)
     end
 
-    context 'when an integer-like object is provided' do
+    context 'when provided object responds to #code' do
 
-      it 'returns true when it matches the code' do
-        status.should eq(double('object', :to_i => 123))
+      context 'when codes match' do
+
+        it 'returns true' do
+          (status == double('object', code: 404)).should be_true
+        end
       end
 
-      it 'returns false when it does not match the code' do
-        status.should_not eq(double('object', :to_i => 321))
+      context 'when codes do not match' do
+
+        it 'returns false' do
+          (status == double('object', code: 444)).should be_false
+        end
       end
     end
 
-    context 'when a non-integer-like object is provided' do
+    context 'when provided object does not respond to #code' do
 
-      it 'compares with the default behaviour' do
-        status.should_not eq(true)
-        status.should eq(status)
+      context 'when object matches #code' do
+
+        it 'returns true' do
+          (status == 404).should be_true
+        end
+      end
+
+      context 'when object matches #name' do
+
+        it 'returns true' do
+          (status == :not_found).should be_true
+        end
+      end
+
+      context 'when object matches neither #code nor #name' do
+
+        it 'returns false' do
+          (status == nil).should be_false
+        end
       end
     end
   end

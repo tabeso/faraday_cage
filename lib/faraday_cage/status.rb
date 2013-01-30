@@ -80,9 +80,9 @@ module FaradayCage
       510 => :not_extended
     }
 
-    MAPPINGS.invert.each do |method, code|
+    MAPPINGS.each do |code, method|
       class_eval <<-RUBY
-        def #{method.to_s}?
+        def #{method}?
           code == #{code}
         end
       RUBY
@@ -95,7 +95,11 @@ module FaradayCage
     end
 
     def ==(object)
-      object.respond_to?(:to_i) ? object.to_i == code : super
+      if object.respond_to?(:code)
+        object.code == code
+      else
+        object == code || object == name
+      end
     end
 
     def name
@@ -115,23 +119,17 @@ module FaradayCage
     end
 
     def inspect
-      "#<FaradayCage::Status code: #{code.inspect} name: #{name.inspect}>"
+      "#<#{self.class} code: #{code.inspect} name: #{name.inspect}>"
     end
 
     def type
       @type ||= case code
-      when 100..199
-        :informational
-      when 200..299
-        :success
-      when 300..399
-        :redirect
-      when 400..499
-        :client_error
-      when 500..599
-        :server_error
-      else
-        :unknown
+      when 100..199 then :informational
+      when 200..299 then :success
+      when 300..399 then :redirect
+      when 400..499 then :client_error
+      when 500..599 then :server_error
+      else               :unknown
       end
     end
 
@@ -162,5 +160,5 @@ module FaradayCage
     def unknown?
       type == :unknown
     end
-  end # StatusCode
+  end # Status
 end # FaradayCage
