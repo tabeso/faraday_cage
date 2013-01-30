@@ -9,7 +9,7 @@ describe FaradayCage::Status do
     end
 
     it 'converts the status code to an integer' do
-      described_class.new('500').code.should eq(500)
+      expect(described_class.new('500').code).to eq(500)
     end
   end
 
@@ -18,11 +18,11 @@ describe FaradayCage::Status do
     describe "##{mapping}?" do
 
       it "returns true when #code equals #{code}" do
-        described_class.new(code).should send(:"be_#{mapping}")
+        expect(described_class.new(code).send(:"#{mapping}?")).to be_true
       end
 
       it "returns false when #code does not equal #{code}" do
-        described_class.new(0).should_not send(:"be_#{mapping}")
+        expect(described_class.new(0).send(:"#{mapping}?")).to be_false
       end
     end
   end
@@ -31,18 +31,18 @@ describe FaradayCage::Status do
 
     it 'returns the mapping for the code' do
       FaradayCage::Status::MAPPINGS.should_receive(:[]).with(5678).and_return(:foo)
-      described_class.new(5678).name.should eq(:foo)
+      expect(described_class.new(5678).name).to eq(:foo)
     end
 
     it 'caches the mapping' do
       status = described_class.new(200)
-      status.name.object_id.should eq(status.name.object_id)
+      expect(status.name.object_id).to eq(status.name.object_id)
     end
 
     context 'when there is no mapping for the code' do
 
       it 'returns nil' do
-        described_class.new(0).name.should be_nil
+        expect(described_class.new(0).name).to be_nil
       end
     end
   end
@@ -58,14 +58,14 @@ describe FaradayCage::Status do
       context 'when codes match' do
 
         it 'returns true' do
-          (status == double('object', code: 404)).should be_true
+          expect(status == double('object', code: 404)).to be_true
         end
       end
 
       context 'when codes do not match' do
 
         it 'returns false' do
-          (status == double('object', code: 444)).should be_false
+          expect(status == double('object', code: 444)).to be_false
         end
       end
     end
@@ -75,21 +75,21 @@ describe FaradayCage::Status do
       context 'when object matches #code' do
 
         it 'returns true' do
-          (status == 404).should be_true
+          expect(status == 404).to be_true
         end
       end
 
       context 'when object matches #name' do
 
         it 'returns true' do
-          (status == :not_found).should be_true
+          expect(status == :not_found).to be_true
         end
       end
 
       context 'when object matches neither #code nor #name' do
 
         it 'returns false' do
-          (status == nil).should be_false
+          expect(status == nil).to be_false
         end
       end
     end
@@ -100,7 +100,7 @@ describe FaradayCage::Status do
     it 'returns the code' do
       status = described_class.new(42)
       status.should_receive(:code).and_return(12)
-      status.to_i.should eq(12)
+      expect(status.to_i).to eq(12)
     end
   end
 
@@ -109,7 +109,7 @@ describe FaradayCage::Status do
     it 'returns the name as a string' do
       status = described_class.new(420)
       status.should_receive(:name).and_return(:enhance_your_cool)
-      status.to_s.should eq('enhance_your_cool')
+      expect(status.to_s).to eq('enhance_your_cool')
     end
   end
 
@@ -118,7 +118,7 @@ describe FaradayCage::Status do
     it 'returns the name' do
       status = described_class.new(100)
       status.should_receive(:name).and_return(:bar)
-      status.to_sym.should eq(:bar)
+      expect(status.to_sym).to eq(:bar)
     end
   end
 
@@ -129,19 +129,19 @@ describe FaradayCage::Status do
     end
 
     it 'returns a string' do
-      inspection.should be_a(String)
+      expect(inspection).to be_a(String)
     end
 
     it 'includes the class name' do
-      inspection.should include('#<FaradayCage::Status')
+      expect(inspection).to include('#<FaradayCage::Status')
     end
 
     it 'includes the status code' do
-      inspection.should include('code: 200')
+      expect(inspection).to include('code: 200')
     end
 
     it 'includes the status name' do
-      inspection.should include('name: :ok')
+      expect(inspection).to include('name: :ok')
     end
   end
 
@@ -149,65 +149,65 @@ describe FaradayCage::Status do
 
     context 'when #code is between 100 and 199' do
       it 'returns :informational' do
-        described_class.new(99).type.should_not eq(:informational)
+        expect(described_class.new(99).type).to_not eq(:informational)
 
         (100..199).each do |code|
-          described_class.new(code).type.should eq(:informational)
+          expect(described_class.new(code).type).to eq(:informational)
         end
 
-        described_class.new(200).type.should_not eq(:informational)
+        expect(described_class.new(200).type).to_not eq(:informational)
       end
     end
 
     context 'when #code is between 200 and 299' do
 
       it 'returns :success' do
-        described_class.new(199).type.should_not eq(:success)
+        expect(described_class.new(199).type).to_not eq(:success)
 
         (200..299).each do |code|
-          described_class.new(code).type.should eq(:success)
+          expect(described_class.new(code).type).to eq(:success)
         end
 
-        described_class.new(300).type.should_not eq(:success)
+        expect(described_class.new(300).type).to_not eq(:success)
       end
     end
 
     context 'when #code is between 300 and 399' do
 
       it 'returns :redirect' do
-        described_class.new(299).type.should_not eq(:redirect)
+        expect(described_class.new(299).type).to_not eq(:redirect)
 
         (300..399).each do |code|
-          described_class.new(code).type.should eq(:redirect)
+          expect(described_class.new(code).type).to eq(:redirect)
         end
 
-        described_class.new(400).type.should_not eq(:redirect)
+        expect(described_class.new(400).type).to_not eq(:redirect)
       end
     end
 
     context 'when #code is between 400 and 499' do
 
       it 'returns :client_error' do
-        described_class.new(399).type.should_not eq(:client_error)
+        expect(described_class.new(399).type).to_not eq(:client_error)
 
         (400..499).each do |code|
-          described_class.new(code).type.should eq(:client_error)
+          expect(described_class.new(code).type).to eq(:client_error)
         end
 
-        described_class.new(500).type.should_not eq(:client_error)
+        expect(described_class.new(500).type).to_not eq(:client_error)
       end
     end
 
     context 'when #code is between 500 and 599' do
 
       it 'returns :redirect' do
-        described_class.new(499).type.should_not eq(:server_error)
+        expect(described_class.new(499).type).to_not eq(:server_error)
 
         (500..599).each do |code|
-          described_class.new(code).type.should eq(:server_error)
+          expect(described_class.new(code).type).to eq(:server_error)
         end
 
-        described_class.new(600).type.should_not eq(:server_error)
+        expect(described_class.new(600).type).to_not eq(:server_error)
       end
     end
 
@@ -215,11 +215,11 @@ describe FaradayCage::Status do
 
       it 'returns :unknown' do
         (0..99).each do |code|
-          described_class.new(code).type.should eq(:unknown)
+          expect(described_class.new(code).type).to eq(:unknown)
         end
 
         (600..1000).each do |code|
-          described_class.new(code).type.should eq(:unknown)
+          expect(described_class.new(code).type).to eq(:unknown)
         end
       end
     end
@@ -237,7 +237,7 @@ describe FaradayCage::Status do
 
         it 'returns true' do
           status.should_receive(:type).and_return(:informational)
-          status.should be_informational
+          expect(status.informational?).to be_true
         end
       end
 
@@ -245,7 +245,7 @@ describe FaradayCage::Status do
 
         it 'returns false' do
           status.should_receive(:type).and_return(:dreadful)
-          status.should_not be_informational
+          expect(status.informational?).to be_false
         end
       end
     end
@@ -256,7 +256,7 @@ describe FaradayCage::Status do
 
         it 'returns true' do
           status.should_receive(:type).and_return(:success)
-          status.should be_success
+          expect(status.success?).to be_true
         end
       end
 
@@ -264,7 +264,7 @@ describe FaradayCage::Status do
 
         it 'returns false' do
           status.should_receive(:type).and_return(:failure)
-          status.should_not be_success
+          expect(status.success?).to be_false
         end
       end
     end
@@ -275,7 +275,7 @@ describe FaradayCage::Status do
 
         it 'returns true' do
           status.should_receive(:type).and_return(:redirect)
-          status.should be_redirect
+          expect(status.redirect?).to be_true
         end
       end
 
@@ -283,7 +283,7 @@ describe FaradayCage::Status do
 
         it 'returns false' do
           status.should_receive(:type).and_return(:stay_here)
-          status.should_not be_redirect
+          expect(status.redirect?).to be_false
         end
       end
     end
@@ -294,7 +294,7 @@ describe FaradayCage::Status do
 
         it 'returns true' do
           status.should_receive(:type).at_least(1).times.and_return(:client_error)
-          status.should be_client_error
+          expect(status.client_error?).to be_true
         end
       end
 
@@ -302,7 +302,7 @@ describe FaradayCage::Status do
 
         it 'returns false' do
           status.should_receive(:type).at_least(1).times.and_return(:not_an_error)
-          status.should_not be_client_error
+          expect(status.client_error?).to be_false
         end
       end
     end
@@ -313,7 +313,7 @@ describe FaradayCage::Status do
 
         it 'returns true' do
           status.should_receive(:type).and_return(:server_error)
-          status.should be_server_error
+          expect(status.server_error?).to be_true
         end
       end
 
@@ -321,7 +321,7 @@ describe FaradayCage::Status do
 
         it 'returns false' do
           status.should_receive(:type).and_return(:useless)
-          status.should_not be_server_error
+          expect(status.server_error?).to be_false
         end
       end
     end
@@ -332,7 +332,7 @@ describe FaradayCage::Status do
 
         it 'returns true' do
           status.should_receive(:type).at_least(1).times.and_return(:client_error)
-          status.should be_error
+          expect(status.error?).to be_true
         end
       end
 
@@ -340,7 +340,7 @@ describe FaradayCage::Status do
 
         it 'returns true' do
           status.should_receive(:type).at_least(1).times.and_return(:server_error)
-          status.should be_error
+          expect(status.error?).to be_true
         end
       end
 
@@ -348,7 +348,7 @@ describe FaradayCage::Status do
 
         it 'returns false' do
           status.should_receive(:type).at_least(1).times.and_return(:operator_error)
-          status.should_not be_error
+          expect(status.error?).to be_false
         end
       end
     end
@@ -359,7 +359,7 @@ describe FaradayCage::Status do
 
         it 'returns true' do
           status.should_receive(:type).and_return(:unknown)
-          status.should be_unknown
+          expect(status.unknown?).to be_true
         end
       end
 
@@ -367,7 +367,7 @@ describe FaradayCage::Status do
 
         it 'returns false' do
           status.should_receive(:type).and_return(:known)
-          status.should_not be_unknown
+          expect(status.unknown?).to be_false
         end
       end
     end
