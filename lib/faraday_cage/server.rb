@@ -21,11 +21,11 @@ module FaradayCage
 
     def connection
       @connection ||= Faraday.new(FaradayCage.default_host) do |conn|
-        conn.adapter :rack, app
-
         if FaradayCage.middleware.respond_to?(:call)
           FaradayCage.middleware.call(conn)
         end
+
+        conn.adapter :rack, app
       end
     end
   end # Server
