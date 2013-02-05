@@ -1,7 +1,7 @@
 require 'active_support/core_ext/module/delegation'
 require 'active_support/concern'
 
-require 'faraday'
+require 'faraday_middleware'
 
 require 'faraday_cage/version'
 require 'faraday_cage/errors'

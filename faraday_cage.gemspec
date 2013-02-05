@@ -7,10 +7,10 @@ Gem::Specification.new do |gem|
   gem.name          = 'faraday_cage'
   gem.version       = FaradayCage::VERSION
   gem.authors       = ['Gabriel Evans']
-  gem.email         = ['gabriel@codeconcoction.com']
+  gem.email         = ['gabe@tabeso.com']
   gem.description   = %q{TODO: Write a gem description}
   gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = 'https://github.com/gevans/faraday_cage'
+  gem.homepage      = 'https://github.com/tabeso/faraday_cage'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'rack', '>= 1.0'
   gem.add_dependency 'rack-test', '>= 0.5.4'
-  gem.add_dependency 'faraday', '>= 0.7.0'
+  gem.add_dependency 'faraday_middleware', '>= 0.8', '< 1.0'
   gem.add_dependency 'activesupport'
 
   gem.add_development_dependency 'rake'
