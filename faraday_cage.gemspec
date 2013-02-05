@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = FaradayCage::VERSION
   gem.authors       = ['Gabriel Evans']
   gem.email         = ['gabe@tabeso.com']
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Faraday Cage allows you to use Faraday for making requests to your REST APIs in integration testing, minus the boilerplate code and crufty parsing and encoding of requests and responses.}
+  gem.summary       = %q{Use Faraday to integration test your REST applications.}
   gem.homepage      = 'https://github.com/tabeso/faraday_cage'
 
   gem.files         = `git ls-files`.split($/)
