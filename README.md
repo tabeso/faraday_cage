@@ -74,7 +74,7 @@ describe 'creating a gist' do
   its(:status) { should be_created }
 
   it 'references the location of the created gist' do
-    get(last_response[:url]).body[:id].should eq(last_response[:id])
+    body[:url].should =~ %r{^https://api.github.com/gists/[a-f0-9]+$}
   end
 end
 ```
