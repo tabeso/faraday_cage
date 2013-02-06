@@ -23,7 +23,7 @@ module FaradayCage
   end
 
   def server
-    @server ||= FaradayCage::Server.new
+    @server ||= Server.new
   end
 
   def connection
