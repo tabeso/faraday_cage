@@ -3,6 +3,9 @@ module FaradayCage
   # Handles configuration of Faraday connection and server options.
   class Config
 
+    ##
+    # @return [String]
+    #   The URL requests will be made as. Defaults to `http://example.com`.
     attr_accessor :default_host
 
     attr_writer :app
@@ -17,6 +20,16 @@ module FaradayCage
       end
     end
 
+    ##
+    # Stores and retrieves a proc for building the Faraday connection.
+    #
+    # @example Defining middleware.
+    #     FaradayCage.middleware do |conn|
+    #       conn.request :json
+    #     end
+    #
+    # @return [Proc]
+    #   Proc for configuring the connection.
     def middleware(&block)
       if block_given?
         @middleware = block
