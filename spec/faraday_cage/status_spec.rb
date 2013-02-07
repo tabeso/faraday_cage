@@ -15,6 +15,10 @@ describe FaradayCage::Status do
 
   FaradayCage::Status::MAPPINGS.each do |code, mapping|
 
+    it "responds to ##{mapping}?" do
+      expect(described_class.new(0)).to respond_to(:"#{mapping}?")
+    end
+
     describe "##{mapping}?" do
 
       it "returns true when #code equals #{code}" do

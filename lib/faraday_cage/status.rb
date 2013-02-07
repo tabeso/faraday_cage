@@ -28,6 +28,8 @@ module FaradayCage
   #     status.forbidden?
   #     # => false
   class Status
+    MAPPING_PATTERN = /(.+)\?$/
+
     MAPPINGS = {
       100 => :continue,
       101 => :switching_protocols,
@@ -79,14 +81,6 @@ module FaradayCage
       507 => :insufficient_storage,
       510 => :not_extended
     }
-
-    MAPPINGS.each do |code, method|
-      class_eval <<-RUBY
-        def #{method}?
-          code == #{code}
-        end
-      RUBY
-    end
 
     attr_reader :code
 
@@ -159,6 +153,22 @@ module FaradayCage
 
     def unknown?
       type == :unknown
+    end
+
+    def respond_to_missing?(method_name, include_private = false)
+      if method_name =~ MAPPING_PATTERN
+        MAPPINGS.values.include?($1.to_sym)
+      else
+        super
+      end
+    end
+
+    def method_missing(method_name, *args, &block)
+      if method_name =~ MAPPING_PATTERN
+        self == $1.to_sym
+      else
+        super
+      end
     end
   end # Status
 end # FaradayCage
