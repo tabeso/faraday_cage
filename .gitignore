@@ -3,6 +3,7 @@
 .bundle
 .config
 .rspec
+.rvmrc
 .yardoc
 Gemfile.lock
 InstalledFiles
